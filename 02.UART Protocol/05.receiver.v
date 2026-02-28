@@ -1,4 +1,4 @@
-`timescale 1ns/1ps
+//`timescale 1ns/1ps
 
 module receiver #(parameter data_width=8)(
   input clk,rst,rx,rx_tick,odd_r_even_parity,parity_en,
@@ -51,7 +51,7 @@ module receiver #(parameter data_width=8)(
               state<=IDLE;
           end
           else 
-            rx_tick_count=rx_tick_count+1;
+            rx_tick_count<=rx_tick_count+1;
         end
         
         DATA : begin
@@ -66,17 +66,17 @@ module receiver #(parameter data_width=8)(
               data_count<=data_count+1;
           end
           else
-            rx_tick_count<=rx_tick_count;
+            rx_tick_count<=rx_tick_count+1;
         end
         
         PARITY : begin
           if(rx_tick_count==15)begin
             rx_tick_count<=0;
-            parity_error<=(odd_r_even_parity) ? (^shift_reg != rx) : (~(^shift_reg != rx));
+            parity_error<=(odd_r_even_parity) ? (^shift_reg != rx) : (~(^shift_reg) != rx);
             state<=STOP;
           end
           else
-            rx_tick_count=rx_tick_count+1;
+            rx_tick_count<=rx_tick_count+1;
         end
         
         STOP : begin
@@ -88,7 +88,7 @@ module receiver #(parameter data_width=8)(
               state<=IDLE;
             end
             else
-              framing_error<=1;
+              framing_error<=(rx!=1);
           end
           else 
             rx_tick_count<=rx_tick_count+1;
