@@ -2,8 +2,8 @@
 
 module testbench;
   
-  parameter tx_sys_clk = 40000000;
-  parameter rx_sys_clk = 10000000;
+  parameter tx_sys_clk = 40_000_000;
+  parameter rx_sys_clk = 10_000_000;
   parameter baud_rate  = 9600;
   parameter data_width = 8;
   
@@ -47,11 +47,17 @@ module testbench;
     .data_out(data_out)
   );
   
+  always #12.5 tx_clk = ~tx_clk;
+  
+  always #50 rx_clk = ~rx_clk;
+  
+  assign #1 rx = tx; 
+  
   initial begin
     $dumpfile("uart.vcd");
     $dumpvars(0);
     
-    $monitor("data in = %0b | tx = %0b | busy = %0b | rx = %0b | data out = %0b | done = %0b | framing error = %0b | parity error =  %0b | t_state = %0d | r_state = %0d | Time = %0t ",data_in,tx,busy,rx,data_out,done,framing_error,parity_error,dut.transmit.state,dut.receive.state,$time);
+    $monitor("data in = %0d | tx = %0b | busy = %0b | rx = %0b | data out = %0d | done = %0b | framing error = %0b | parity error =  %0b | t_state = %0d | r_state = %0d | Time = %0t ",data_in,tx,busy,rx,data_out,done,framing_error,parity_error,dut.transmit.state,dut.receive.state,$time);
     
     rst=0;
     baud_en=1;
@@ -65,19 +71,12 @@ module testbench;
     #100;
     rst=1;
     
-    testcase(8'd250,1,1);
-    testcase(8'd96,1,0);
-    testcase(8'd69,0,1);
-    #1000;;
-    $finish;
+    testcase(8'd250,0,1);
+    testcase(8'd251,0,0);
+    testcase(8'd252,0,1);
+    #1000 $finish;
     
   end
-  
-  always #12.5 tx_clk = ~tx_clk;
-  
-  always #50 rx_clk = ~rx_clk;
-  
-  assign #1 rx = tx; 
     
   task testcase (input [data_width-1:0]data,input p_en,input p_type);
     begin
@@ -87,7 +86,7 @@ module testbench;
       parity_en=p_en;
       odd_r_even_parity=p_type;
       
-      $display("\n------------------------- Sending Data: %d | parity en & type  = %0d & %0s-----------------------", data, p_en, (p_type) ? "ODD" : "EVEN");
+      $display("\n------------------------- Sending Data: %d | parity en & type  = %0d & %0s-----------------------\n", data, p_en, (p_type) ? "ODD" : "EVEN");
       
       tx_en=1;
       @(posedge busy);
@@ -108,11 +107,3 @@ module testbench;
   endtask
   
 endmodule
-      
-    
-    
-  
-  
-  
-  
-  
