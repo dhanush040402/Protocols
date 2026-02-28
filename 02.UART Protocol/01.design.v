@@ -1,9 +1,9 @@
-`timescale 1ns/1ps
+//`timescale 1ns/1ps
 
-`include "tx_baud_generator.v"
-`include "rx_baud_generator.v"
-`include "transmitter.v"
-`include "receiver.v"
+`include "tx_baud_generator.sv"
+`include "rx_baud_generator.sv"
+`include "transmitter.sv"
+`include "receiver.sv"
 
 module uart #(
   parameter tx_sys_clk = 40000000,
