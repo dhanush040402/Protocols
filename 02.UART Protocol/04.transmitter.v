@@ -1,12 +1,15 @@
-`timescale 1ns/1ps
+//`timescale 1ns/1ps
 
-module transmitter #(parameter data_width=8)(
+module transmitter #(parameter data_width = 8)(
   input clk,rst,tx_en,tx_tick,odd_r_even_parity,parity_en,
   input [data_width-1:0]data_in,
-  output reg tx,busy
+  output reg tx,
+  output busy
 );
   
   localparam data_count_width = $clog2(data_width);
+  
+  
   reg [data_count_width-1:0]data_count;
   reg [data_width-1:0]shift_reg;
   reg parity_bit;
@@ -50,7 +53,7 @@ module transmitter #(parameter data_width=8)(
             end
           end
           else begin
-              data_count=data_count+1;
+              data_count<=data_count+1;
             end
           end
         
@@ -76,6 +79,6 @@ module transmitter #(parameter data_width=8)(
     
   end
   
-  assign  busy = (state == ~IDLE);
+  assign  busy = (state != IDLE);
   
 endmodule
