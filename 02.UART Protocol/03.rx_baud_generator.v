@@ -1,4 +1,4 @@
-`timescale 1ns/1ps
+//`timescale 1ns/1ps
 
 module rx_baud_generator #(
   parameter rx_sys_clk=50000000,
@@ -8,7 +8,7 @@ module rx_baud_generator #(
   output reg rx_tick
 );
   
-  localparam rx_cycle = (rx_sys_clk / baud_rate*16);
+  localparam integer rx_cycle = rx_sys_clk / (baud_rate*16);
   localparam rx_bit = $clog2(rx_cycle);
   reg [rx_bit-1:0]rx_count;
   
@@ -25,8 +25,8 @@ module rx_baud_generator #(
         rx_tick<=1;
       end
       else begin
-        rx_tick=0;
-        rx_count=rx_count+1;
+        rx_tick<=0;
+        rx_count<=rx_count+1;
       end
       
     end
