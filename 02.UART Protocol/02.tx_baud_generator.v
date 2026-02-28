@@ -1,4 +1,4 @@
-`timescale 1ns/1ps
+//`timescale 1ns/1ps
 
 module tx_baud_generator #(
   parameter tx_sys_clk=50000000,
@@ -8,7 +8,7 @@ module tx_baud_generator #(
   output reg tx_tick
 );
   
-  localparam tx_cycle = (tx_sys_clk / baud_rate);
+  localparam integer tx_cycle = tx_sys_clk / baud_rate;
   
   localparam tx_bit = $clog2(tx_cycle);
   
@@ -22,13 +22,13 @@ module tx_baud_generator #(
     end
     
     else if(baud_en)begin
-      if(tx_count==tx_cycle-1)begin
+      if(tx_count == tx_cycle-1)begin
         tx_count<=0;
         tx_tick<=1;
       end
       else begin
-        tx_tick=0;
-        tx_count=tx_count+1;
+        tx_tick<=0;
+        tx_count<=tx_count+1;
       end
       
     end
@@ -36,7 +36,3 @@ module tx_baud_generator #(
   end
   
 endmodule
-
-  
-  
-    
