@@ -1,5 +1,5 @@
 //`timescale 1ns/1ps
-
+//receiver
 module receiver #(parameter data_width=8)(
   input clk,rst,rx,rx_tick,odd_r_even_parity,parity_en,
   output reg done,framing_error,parity_error,
