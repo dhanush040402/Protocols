@@ -1,5 +1,5 @@
 //`timescale 1ns/1ps
-
+//transmitter
 module transmitter #(parameter data_width = 8)(
   input clk,rst,tx_en,tx_tick,odd_r_even_parity,parity_en,
   input [data_width-1:0]data_in,
