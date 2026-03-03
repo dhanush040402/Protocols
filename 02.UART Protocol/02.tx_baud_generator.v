@@ -1,5 +1,5 @@
 //`timescale 1ns/1ps
-
+//tx_baud generator
 module tx_baud_generator #(
   parameter tx_sys_clk=50000000,
   parameter baud_rate=9600
