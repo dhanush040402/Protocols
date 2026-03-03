@@ -1,4 +1,5 @@
 //`timescale 1ns/1ps
+//design
 
 `include "tx_baud_generator.sv"
 `include "rx_baud_generator.sv"
