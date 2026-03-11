@@ -1,3 +1,4 @@
+//slave1
 `timescale 1ns/1ps
 
 module slave1(
