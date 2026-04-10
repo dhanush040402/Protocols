@@ -9,7 +9,7 @@ module spi_slave (
   output reg [7:0]rx_data,
   output reg valid
 );
-  reg [2:0] count;
+  reg [3:0] count;
   reg [7:0] tx_shift;
   reg [7:0] rx_shift;
   
@@ -34,7 +34,7 @@ module spi_slave (
     
     else if(!cs_n)begin
       rx_shift <= {rx_shift[6:0],mosi};
-      if(count == 7)begin
+      if(count == 8)begin
         count <= 0;
         valid <= 1;
         rx_data <= {rx_shift[6:0],mosi};
@@ -55,7 +55,7 @@ module spi_slave (
   
   always @(posedge s_clk or negedge rst_n)begin
     
-    if(rst_n)begin
+    if(!rst_n)begin
       tx_shift <= 0;
     end
     
@@ -64,13 +64,13 @@ module spi_slave (
     end
     
     else if(!cs_n)begin
-      tx_shift <= {tx_shift[6:0],1'b1};
+      tx_shift <= {tx_shift[6:0],1'b0};
     end
   end
   
   always @(negedge s_clk or negedge rst_n)begin
     
-    if(rst_n)begin
+    if(!rst_n)begin
       miso <= 0;
     end
     
@@ -83,6 +83,4 @@ module spi_slave (
     end
   end
   
-endmodule
-      
-      
+endmodule      
