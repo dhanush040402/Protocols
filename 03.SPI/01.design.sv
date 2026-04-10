@@ -1,3 +1,4 @@
+//spi top module
 `include "spi_master.sv"
 `include "spi_slave.sv"
 
