@@ -5,11 +5,11 @@ module tb;
   reg clk;
   reg rst_n;
   reg start;
-  reg [7:0]master_tx_data;
-  reg [7:0]slave_tx_data;
+  reg [7:0] master_tx_data;
+  reg [7:0] slave_tx_data;
   
-  wire [7:0]master_rx_data;
-  wire [7:0]slave_rx_data;
+  wire [7:0] master_rx_data;
+  wire [7:0] slave_rx_data;
   wire valid;
   wire done;
   
@@ -27,36 +27,46 @@ module tb;
   
   initial begin
     clk = 0;
-    #10 clk = ~clk;
+    forever #10 clk = ~clk;
   end
   
   initial begin
     $dumpfile("spi.vcd");
     $dumpvars(0);
     
-    rst_n = 1;
-    
-    #20;
-    
     rst_n = 0;
-    start = 1;
+    start = 0;
     
+    
+    #50;  
+    
+    rst_n = 1; 
     master_tx_data = 8'd150;
     slave_tx_data = 8'd96;
     
     $display("Before Transmission");
-    $display("master :",master_tx_data);
-    $display("slave :",slave_tx_data);
+    $display("master_tx_data: %0d", master_tx_data);
+    $display("slave_tx_data: %0d", slave_tx_data);
     
-    @(posedge done);
+    start = 1;
+    
+   
     @(posedge valid);
+    @(posedge done);
     
-    start =0;
+
+    
+    start = 0;
     
     $display("After Transmission");
-    $display("master :",master_rx_data);
-    $display("slave :",slave_rx_data);
+    $display("master_rx_data: %0d", master_rx_data);
+    $display("slave_rx_data: %0d", slave_rx_data);
     
+    if(master_rx_data == slave_tx_data && slave_rx_data == master_tx_data)
+      $display("TEST PASSED!");
+    else
+      $display("TEST FAILED!");
+    #200;
     $finish;
   end
 endmodule
