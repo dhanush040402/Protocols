@@ -1,3 +1,4 @@
+//spi master
 module spi_master #(
   parameter sys_clk = 50_000_000,
   parameter spi_clk = 10_000_000
