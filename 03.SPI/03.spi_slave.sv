@@ -1,3 +1,4 @@
+//spi slave
 module spi_slave (
   input s_clk,
   input rst_n,
